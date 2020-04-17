@@ -1,6 +1,4 @@
 import java.util.*;
-import java.io.*;
-import java.math.*;
 import java.util.logging.Logger;
 
 import static java.util.logging.Level.INFO;
@@ -48,8 +46,8 @@ class Player {
             p.opponentX = in.nextInt();
             p.opponentY = in.nextInt();
 
-            p.calculateNextMove();
             p.calculateNextDest();
+            p.calculateNextMove();
             p.move();
 
         }
@@ -64,25 +62,25 @@ class Player {
             System.out.println(nextCheckpointX + " " + nextCheckpointY + " SHIELD");
         }*/
         System.out.println(nextDestX + " " + nextDestY + " " + thrust);
-        //System.out.println(nextCheckpointX + " " + nextCheckpointY + " " + thrust);
     }
 
     void calculateNextMove(){
-        double calcAngle = Math.cos(Math.toRadians(nextCheckpointAngle));
-        double calcThrust = nextCheckpointDist / (4*600f);
+        float calcAngle = (float) Math.cos(Math.toRadians(nextCheckpointAngle));
+        float calcThrust = nextCheckpointDist / (2700f);
 
         LOGGER.log(INFO, calcAngle + " " + calcThrust);
 
         //LOGGER.log(INFO, "Opponent: " + opponentX + " " + opponentY);
         //LOGGER.log(INFO, "Player: " + x + " " + y);
 
-        if(calcAngle < 0.8){
+        if(calcAngle < 0.8f){
             prevCpX = x;
             prevCpY = y;
             //LOGGER.log(INFO, "Prev: " + prevCpX + " " + prevCpY);
         }
 
-        if(calcAngle > 0) calcAngle = 1;
+        if(calcAngle > 0.3f) calcAngle = 1;
+        else if (calcAngle > 0) calcAngle = 0.7f;
         else calcAngle = 1 + calcAngle;
 
         if(calcThrust > 1) calcThrust = 1;
@@ -93,16 +91,16 @@ class Player {
 
     void calculateNextDest(){
         if(prevCpX - nextCheckpointX < -300)
-            nextDestX = nextCheckpointX-400;
+            nextDestX = nextCheckpointX-350;
         else if(prevCpX - nextCheckpointX > 300)
-            nextDestX = nextCheckpointX+400;
+            nextDestX = nextCheckpointX+350;
         else
             nextDestX = nextCheckpointX;
 
         if(prevCpY - nextCheckpointY < -300)
-            nextDestY = nextCheckpointY-400;
+            nextDestY = nextCheckpointY-350;
         else if(prevCpY - nextCheckpointY > 300)
-            nextDestY = nextCheckpointY+400;
+            nextDestY = nextCheckpointY+350;
         else
             nextDestY = nextCheckpointY;
 
